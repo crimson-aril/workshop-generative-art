@@ -1,7 +1,7 @@
-const canvasSketch = require('canvas-sketch');
+import canvasSketch from "canvas-sketch";
 
 const settings = {
-  dimensions: [ 2048, 2048 ]
+  dimensions: [2048, 2048],
 };
 
 const sketch = () => {
@@ -13,7 +13,7 @@ const sketch = () => {
       for (let y = 0; y < count; y++) {
         const u = x / (count - 1);
         const v = y / (count - 1);
-        points.push([ u, v ]);
+        points.push([u, v]);
       }
     }
     return points;
@@ -22,19 +22,26 @@ const sketch = () => {
   const points = createGrid();
 
   return ({ context, width, height }) => {
-    context.fillStyle = 'white';
+    context.fillStyle = "white";
     context.fillRect(0, 0, width, height);
 
-    points.forEach(([ u, v ]) => {
+    points.forEach(([u, v]) => {
       const x = u * width;
       const y = v * height;
 
       context.beginPath();
       context.arc(x, y, 40, 0, Math.PI * 2);
-      context.fillStyle = 'black';
+      context.fillStyle = "black";
       context.fill();
     });
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

@@ -1,26 +1,25 @@
-global.THREE = require('three');
-
-const canvasSketch = require('canvas-sketch');
-const random = require('canvas-sketch-util/random');
-const palettes = require('nice-color-palettes');
+import canvasSketch from "canvas-sketch";
+import random from "canvas-sketch-util/random";
+import palettes from "nice-color-palettes";
+import * as THREE from "three";
 
 const settings = {
+  dimensions: [2048, 2048],
   animate: true,
-  dimensions: [ 1024, 1280 ],
   // Get a WebGL canvas rather than 2D
-  context: 'webgl',
+  context: "webgl2",
   // Turn on MSAA
-  attributes: { antialias: true }
+  attributes: { antialias: true },
 };
 
 const sketch = ({ context, width, height }) => {
-  // Create a renderer
+  // Create a renderer passing the context provided by canvas-sketch
   const renderer = new THREE.WebGLRenderer({
-    context
+    context,
   });
 
   // WebGL background color
-  renderer.setClearColor('hsl(0, 0%, 95%)', 1);
+  renderer.setClearColor("hsl(0, 0%, 95%)", 1);
 
   // Setup a camera, we will update its settings on resize
   const camera = new THREE.OrthographicCamera();
@@ -45,7 +44,7 @@ const sketch = ({ context, width, height }) => {
     const point = new THREE.Vector3(
       grid(random.value(), gridSize),
       grid(random.value(), gridSize),
-      grid(random.value(), gridSize)
+      grid(random.value(), gridSize),
     );
 
     // Stretch it vertically
@@ -61,11 +60,7 @@ const sketch = ({ context, width, height }) => {
     mesh.material.color.set(random.pick(palette));
 
     // Randomly scale each axis
-    mesh.scale.set(
-      random.gaussian(),
-      random.gaussian(),
-      random.gaussian()
-    );
+    mesh.scale.set(random.gaussian(), random.gaussian(), random.gaussian());
 
     // Do more random scaling on each axis
     if (random.chance(0.5)) mesh.scale.x *= random.gaussian();
@@ -87,11 +82,11 @@ const sketch = ({ context, width, height }) => {
 
   // Create each cube and return a THREE.Mesh
   const meshes = Array.from(new Array(chunks)).map(() => {
-    // Basic "unlit" material with no depth
+    // Basic standard material with lit surface properties
     const material = new THREE.MeshStandardMaterial({
       metalness: 0,
       roughness: 1,
-      color: random.pick(palette)
+      color: random.pick(palette),
     });
 
     // Create the mesh
@@ -104,20 +99,20 @@ const sketch = ({ context, width, height }) => {
   });
 
   // Add meshes to the group
-  meshes.forEach(m => container.add(m));
+  meshes.forEach((m) => container.add(m));
 
   // Then add the group to the scene
   scene.add(container);
 
-  // Add a harsh light to the scene
-  const light = new THREE.DirectionalLight('white', 1);
+  // Add a light to the scene (intensity calibrated for physically-correct rendering pipelines)
+  const light = new THREE.DirectionalLight("white", 3);
   light.position.set(0, 0, 2);
   scene.add(light);
 
   // draw each frame
   return {
     // Handle resize events here
-    resize ({ pixelRatio, viewportWidth, viewportHeight }) {
+    resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
 
@@ -137,26 +132,36 @@ const sketch = ({ context, width, height }) => {
       camera.updateProjectionMatrix();
     },
     // And render events here
-    render ({ time }) {
+    render({ time }) {
       // Animate each mesh with noise
-      meshes.forEach(mesh => {
+      meshes.forEach((mesh) => {
         const f = 0.5;
-        mesh.position.x = mesh.originalPosition.x + 0.25 * random.noise3D(
-          mesh.originalPosition.x * f,
-          mesh.originalPosition.y * f,
-          mesh.originalPosition.z * f,
-          time * 0.25
-        );
+        mesh.position.x =
+          mesh.originalPosition.x +
+          0.25 *
+            random.noise3D(
+              mesh.originalPosition.x * f,
+              mesh.originalPosition.y * f,
+              mesh.originalPosition.z * f,
+              time * 0.25,
+            );
       });
 
       // Draw scene with our camera
       renderer.render(scene, camera);
     },
     // Dispose of WebGL context (optional)
-    unload () {
+    unload() {
       renderer.dispose();
-    }
+    },
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

@@ -1,30 +1,17 @@
-/**
- * An example of a Sol LeWitt inspired "Wall Drawing" using
- * a simple generative algorithm.
- *
- * The instructions for this mural:
- *
- * - Using a 6x6 grid of evenly spaced points
- * - Connect two random points on the grid; forming a trapezoid with two parallel sides extending down
- * - Fill the trapezoid with a colour, then stroke with the background colour
- * - Find another two random points and repeat; continuing until all grid points are exhausted
- * - Layer the shapes by the average Y position of their two grid points
- */
-
-const canvasSketch = require('canvas-sketch');
-const random = require('canvas-sketch-util/random');
-const { lerp } = require('canvas-sketch-util/math');
-const palettes = require('nice-color-palettes/1000.json');
+import canvasSketch from "canvas-sketch";
+import random from "canvas-sketch-util/random";
+import { lerp } from "canvas-sketch-util/math";
+import palettes from "nice-color-palettes/1000.json";
 
 const settings = {
-  dimensions: [ 2048, 1024 ]
+  dimensions: [2048, 1024],
 };
 
 const sketch = ({ width, height }) => {
   // Let's get a random palette of 1-5 colours
   const nColors = random.rangeFloor(1, 6);
   const palette = random.shuffle(random.pick(palettes)).slice(0, nColors);
-  const background = 'white';
+  const background = "white";
 
   // Padding around edges
   const margin = width * 0.05;
@@ -40,7 +27,7 @@ const sketch = ({ width, height }) => {
         const v = y / (yCount - 1);
         const px = lerp(margin, width - margin, u);
         const py = lerp(margin, height - margin, v);
-        points.push([ px, py ]);
+        points.push([px, py]);
       }
     }
     return points;
@@ -65,10 +52,10 @@ const sketch = ({ width, height }) => {
     const color = random.pick(palette);
 
     // Filter these points out of the grid
-    grid = grid.filter(p => !pointsToRemove.includes(p));
+    grid = grid.filter((p) => !pointsToRemove.includes(p));
 
     // Now let's form the trapezoid from points A to B
-    const [ a, b ] = pointsToRemove;
+    const [a, b] = pointsToRemove;
 
     shapes.push({
       color,
@@ -76,15 +63,10 @@ const sketch = ({ width, height }) => {
       // up to the first point,
       // through the second point,
       // and then back down to the bottom of the page
-      path: [
-        [ a[0], height - margin ],
-        a,
-        b,
-        [ b[0], height - margin ]
-      ],
+      path: [[a[0], height - margin], a, b, [b[0], height - margin]],
       // The average Y position of both grid points
       // This will be used for layering
-      y: (a[1] + b[1]) / 2
+      y: (a[1] + b[1]) / 2,
     });
   }
 
@@ -101,7 +83,7 @@ const sketch = ({ width, height }) => {
 
     shapes.forEach(({ lineWidth, path, color }) => {
       context.beginPath();
-      path.forEach(([ x, y ]) => {
+      path.forEach(([x, y]) => {
         context.lineTo(x, y);
       });
       context.closePath();
@@ -113,7 +95,7 @@ const sketch = ({ width, height }) => {
       context.fill();
 
       // Outline at full opacity
-      context.lineJoin = context.lineCap = 'round';
+      context.lineJoin = context.lineCap = "round";
       context.strokeStyle = background;
       context.globalAlpha = 1;
       context.stroke();
@@ -121,4 +103,24 @@ const sketch = ({ width, height }) => {
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}
+
+/**
+ * An example of a Sol LeWitt inspired "Wall Drawing" using
+ * a simple generative algorithm.
+ *
+ * The instructions for this mural:
+ *
+ * - Using a 6x6 grid of evenly spaced points
+ * - Connect two random points on the grid; forming a trapezoid with two parallel sides extending down
+ * - Fill the trapezoid with a colour, then stroke with the background colour
+ * - Find another two random points and repeat; continuing until all grid points are exhausted
+ * - Layer the shapes by the average Y position of their two grid points
+ */

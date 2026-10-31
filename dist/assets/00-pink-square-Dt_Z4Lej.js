@@ -1,0 +1,2 @@
+import{a as e}from"./rolldown-runtime-BWaJ3C7D.js";import{t}from"./canvas-sketch.umd-umRQusgK.js";var n=e(t(),1),r={dimensions:[2048,2048]},i=()=>({context:e,width:t,height:n})=>{e.fillStyle=`pink`,e.fillRect(0,0,t,n)};function a(){return(0,n.default)(i,{...r,parent:document.getElementById(`sketch-workspace`)||document.body,scaleToFit:!0,scaleToFitPadding:36})}export{a as start};
+//# sourceMappingURL=00-pink-square-Dt_Z4Lej.js.map

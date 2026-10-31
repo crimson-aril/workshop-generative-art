@@ -1,34 +1,30 @@
-const canvasSketch = require('canvas-sketch');
-// const eases = require('eases/expo-in-out');
-const BezierEasing = require('bezier-easing');
-
-// Ensure ThreeJS is in global scope for the 'examples/'
-global.THREE = require('three');
-
-// Include any additional ThreeJS examples below
-require('three/examples/js/controls/OrbitControls');
+import canvasSketch from "canvas-sketch";
+import BezierEasing from "bezier-easing";
+import * as THREE from "three";
+// Modern Three.js addons path structure for controls
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const settings = {
-  dimensions: [ 512, 512 ],
+  dimensions: [2048, 2048],
   duration: 4,
   fps: 24,
-  playbackRate: 'throttle',
+  playbackRate: "throttle",
   // Make the loop animated
   animate: true,
   // Get a WebGL canvas rather than 2D
-  context: 'webgl',
+  context: "webgl2",
   // Turn on MSAA
-  attributes: { antialias: true }
+  attributes: { antialias: true },
 };
 
 const sketch = ({ context }) => {
-  // Create a renderer
+  // Create a renderer passing the context provided by canvas-sketch
   const renderer = new THREE.WebGLRenderer({
-    context
+    context,
   });
 
   // WebGL background color
-  renderer.setClearColor('hsl(0, 0%, 95%)', 1);
+  renderer.setClearColor("hsl(0, 0%, 95%)", 1);
 
   // Setup a camera
   const camera = new THREE.OrthographicCamera();
@@ -39,16 +35,16 @@ const sketch = ({ context }) => {
   const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
     new THREE.MeshPhysicalMaterial({
-      color: 'red',
+      color: "red",
       metalness: 0,
       roughness: 1,
-      flatShading: true
-    })
+      flatShading: true,
+    }),
   );
   scene.add(mesh);
 
-  // Add some light
-  const light = new THREE.DirectionalLight('white', 1);
+  // Add some light (intensity calibrated for modern physically-correct pipelines)
+  const light = new THREE.DirectionalLight("white", 3);
   light.position.set(1, 2, 1);
   scene.add(light);
 
@@ -57,7 +53,7 @@ const sketch = ({ context }) => {
   // draw each frame
   return {
     // Handle resize events here
-    resize ({ pixelRatio, viewportWidth, viewportHeight }) {
+    resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
 
@@ -84,15 +80,22 @@ const sketch = ({ context }) => {
       camera.updateProjectionMatrix();
     },
     // Update & render your scene here
-    render ({ playhead }) {
+    render({ playhead }) {
       scene.rotation.y = ease(playhead) * Math.PI * 2;
       renderer.render(scene, camera);
     },
     // Dispose of events & renderer for cleaner hot-reloading
-    unload () {
+    unload() {
       renderer.dispose();
-    }
+    },
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

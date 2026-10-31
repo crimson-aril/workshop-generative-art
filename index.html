@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="An interactive collection of generative art, creative coding, Canvas, and WebGL sketches."
+    />
+
+    <meta name="theme-color" content="#f2f2ef" />
+
+    <title>Generative Art Workshop</title>
+  </head>
+
+  <body>
+    <div id="sketch-navigation" role="group" aria-label="Sketch navigation">
+      <button
+        id="sketch-previous"
+        class="navigation-button"
+        type="button"
+        aria-label="Previous sketch"
+        aria-keyshortcuts="ArrowLeft"
+        title="Previous sketch (Left Arrow)"
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="m14.5 5-7 7 7 7" />
+        </svg>
+        <span class="navigation-label">Previous</span>
+      </button>
+
+      <button
+        id="sidebar-toggle"
+        type="button"
+        aria-label="Quick navigation"
+        aria-controls="sketch-sidebar"
+        aria-expanded="false"
+        title="Quick navigation (Shift)"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+          stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+
+      <button
+        id="sketch-next"
+        class="navigation-button"
+        type="button"
+        aria-label="Next sketch"
+        aria-keyshortcuts="ArrowRight"
+        title="Next sketch (Right Arrow)"
+      >
+        <span class="navigation-label">Next</span>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="m9.5 5 7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <div id="sidebar-backdrop" aria-hidden="true"></div>
+
+    <aside id="sketch-sidebar" aria-label="Sketch navigation" inert>
+      <div class="sidebar-heading">
+        <span class="sidebar-eyebrow">GENERATIVE ART WORKSHOP</span>
+        <h1>Choose a sketch</h1>
+      </div>
+
+      <div id="sketch-selector-container">
+        <p id="sketch-list-label">Explore the collection</p>
+
+        <select id="sketch-selector" hidden aria-hidden="true" tabindex="-1">
+          <optgroup label="2D Sketches">
+            <option value="pink-square">00 — Pink Square</option>
+            <option value="grid">01 — Grid</option>
+            <option value="grid-margin">02 — Grid Margin</option>
+            <option value="grid-random">03 — Random Grid</option>
+            <option value="grid-colors">04 — Grid Colors</option>
+            <option value="grid-konami">05 — Konami Grid</option>
+            <option value="grid-painting">06 — Grid Painting</option>
+            <option value="advanced-wall-drawing">07 — Advanced Wall Drawing</option>
+            <option value="grid-animation">08 — Grid Animation</option>
+            <option value="noise-lines">09 — Noise Lines</option>
+            <option value="pie-charts">10 — Pie Charts</option>
+          </optgroup>
+
+          <optgroup label="Presentation Slides">
+            <option value="computational-fur">Computational Fur</option>
+            <option value="slides-background-penplotter">
+              Slides Background — Pen Plotter
+            </option>
+            <option value="slides-background">Slides Background</option>
+            <option value="sol-lewitt-wall-drawing-273">
+              Sol LeWitt — Wall Drawing 273
+            </option>
+            <option value="three-concepts-meshes">
+              Three Concepts — Meshes
+            </option>
+            <option value="three-concepts-two-meshes">
+              Three Concepts — Two Meshes
+            </option>
+            <option value="three-concepts">Three Concepts</option>
+          </optgroup>
+
+          <optgroup label="WebGL / Three.js">
+            <option value="cube">00 — Cube</option>
+            <option value="isometric">01 — Isometric</option>
+            <option value="cubes">02 — Cubes</option>
+            <option value="cubes-lighting">03 — Cubes Lighting</option>
+            <option value="cubes-animation">04 — Cubes Animation</option>
+            <option value="seamless-loop">05 — Seamless Loop</option>
+            <option value="shader">06 — Shader</option>
+            <option value="shader-noise">07 — Shader Noise</option>
+            <option value="vertex-shader">08 — Vertex Shader</option>
+            <option value="blob">09 — Blob</option>
+          </optgroup>
+        </select>
+
+        <div
+          id="sketch-list"
+          role="region"
+          aria-labelledby="sketch-list-label"
+        ></div>
+      </div>
+
+      <p class="sidebar-footer">Shift opens navigation. Left and right arrows change sketches.</p>
+    </aside>
+
+    <main id="sketch-workspace" aria-label="Active sketch">
+      <!-- The active sketch canvas mounts here and stays centered in the viewport. -->
+    </main>
+
+    <div id="sketch-status" role="status" aria-live="polite" hidden>
+      Loading sketch...
+    </div>
+
+    <script type="module" src="/src/index.js"></script>
+  </body>
+</html>

@@ -1,17 +1,15 @@
-#### <sup>:closed_book: [workshop-generative-art](../README.md) → Exercises</sup>
-
+---
+title: "Exercises"
 ---
 
-# Exercises
+## Exercises
 
 Here are some exercises to try during lunch & free coding periods. Like a Sol LeWitt artwork, you are given the instructions, and its your task to implement it with code and a generative system.
 
-- [Generative Poster Designs](#pie)
-- [Generative Sol LeWitt Inspired Wall Drawing](#wall)
+1. [Generative Poster Designs](#generative-poster-designs)
+2. [Generative Sol LeWitt Inspired Wall Drawing](#generative-sol-lewitt-inspired-wall-drawing)
 
-<a name="pie" />
-
-## Generative Poster Designs
+### Generative Poster Designs
 
 This is a sketch trying to recreate [these poster designs](https://twitter.com/hyper_yolo/status/1116208688522383360) by Amie Chen ([@hyper_yolo](https://twitter.com/hyper_yolo/status/1116208688522383360)).
 
@@ -58,6 +56,4 @@ Example Outputs:
 
 You can find the solution in `src/2d/07-advanced-wall-drawing.js`.
 
-## 
-
-#### <sup>[← Back to Documentation](../README.md)
+### [← Back to Documentation](../README.md)

@@ -1,8 +1,8 @@
-const canvasSketch = require('canvas-sketch');
-const { lerp } = require('canvas-sketch-util/math');
+import canvasSketch from "canvas-sketch";
+import { lerp } from "canvas-sketch-util/math";
 
 const settings = {
-  dimensions: [ 2048, 2048 ]
+  dimensions: [2048, 2048],
 };
 
 const sketch = ({ width, height }) => {
@@ -17,7 +17,7 @@ const sketch = ({ width, height }) => {
       for (let y = 0; y < count; y++) {
         const u = x / (count - 1);
         const v = y / (count - 1);
-        points.push([ u, v ]);
+        points.push([u, v]);
       }
     }
     return points;
@@ -27,19 +27,26 @@ const sketch = ({ width, height }) => {
   const points = createGrid().filter(() => Math.random() > 0.5);
 
   return ({ context, width, height }) => {
-    context.fillStyle = '#cc8080';
+    context.fillStyle = "#cc8080";
     context.fillRect(0, 0, width, height);
 
-    points.forEach(([ u, v ]) => {
+    points.forEach(([u, v]) => {
       const x = lerp(margin, width - margin, u);
       const y = lerp(margin, height - margin, v);
 
       context.beginPath();
       context.arc(x, y, tileSize * 0.5, 0, Math.PI * 2);
-      context.fillStyle = '#fff';
+      context.fillStyle = "#fff";
       context.fill();
     });
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

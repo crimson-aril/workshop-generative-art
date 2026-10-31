@@ -1,8 +1,6 @@
-#### <sup>:closed_book: [workshop-generative-art](../README.md) → Cheat Sheet</sup>
-
 ---
-
-# Cheat Sheet
+title: "Cheat Sheet"
+---
 
 Here you will find some 'recipes' and patterns that you can use in creative coding and generative art.
 
@@ -277,7 +275,9 @@ camera.updateProjectionMatrix();
 
 Here's a small reference you can use to remember XYZ axes in ThreeJS.
 
-<img src="./images/xyz-1.png" width="33%" /> <img src="./images/xyz-2.png" width="33%" />
+| Visual Example 1 | Visual Example 2 |
+| :---: | :---: |
+| ![Description of image 1](./images/xyz-1.png) | ![Description of image 2](./images/xyz-2.png) |
 
 ## Third-Party GLSL Modules
 
@@ -319,6 +319,4 @@ function loopNoise (x, y, t, scale = 1) {
 }
 ```
 
-## 
-
-#### <sup>[← Back to Documentation](../README.md)
+### [← Back to Documentation](../README.md)

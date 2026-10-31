@@ -2,52 +2,52 @@
 
 This repository includes code & resources for students attending my *Generative Art & Creative Coding with JavaScript* workshops in 2018.
 
-# Contents
+## Contents
 
-- [Tools & Prerequisites](#tools--prerequisites)
+1. [Tools & Prerequisites](#tools--prerequisites)
 
-- [Installing the Prerequisites](#installing-the-prerequisites)
+2. [Installing the Prerequisites](#installing-the-prerequisites)
 
-  - [Complete Installation Guide](#complete-installation-guide)
+3. [Complete Installation Guide](#complete-installation-guide)
 
-- [Installing `canvas-sketch` CLI](#installing-canvas-sketch-cli)
+4. [Installing `canvas-sketch` CLI](#installing-canvas-sketch-cli)
 
-- [Command-Line Tips & Suggestions](#command-line-tips--suggestions)
+5. [Command-Line Tips & Suggestions](#command-line-tips--suggestions)
 
-- [Cloning & Running Examples](#cloning--running-examples)
+6. [Cloning & Running Examples](#cloning--running-examples)
 
-- [Other Modules for Creative Coding](#other-modules-for-creative-coding)
+7. [Other Modules for Creative Coding](#other-modules-for-creative-coding)
 
-- [Cheat Sheet](#cheat-sheet)
+8. [Cheat Sheet](#cheat-sheet)
 
-- [Exercises](#exercises)
+9. [Exercises](#exercises)
 
-- [Further Reading](#further-reading)
+10. [Further Reading](#further-reading)
 
-# Tools & Prerequisites
+## Tools & Prerequisites
 
 Here is a list of tools, software and libraries that will be used during the workshop.
 
 | Tool | Documentation | Description |
-|---|---|---|
-| *Code Editor* | | A JavaScript code editor, [VSCode](https://code.visualstudio.com/) is recommended
-| *Browser* |  | A modern browser, [Chrome](https://www.google.com/chrome/) is recommended
-| *Canvas API* | [[docs](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)] | The HTML5 `<canvas>` API, built into all browsers 
-| *Command-Line* | [[guide](./docs/command-line.md)] | A command-line application like Terminal (macOS) or [cmder](http://cmder.net/) (Windows)
-| [Node.js](https://nodejs.org/en/) (v8+) | [[docs](https://nodejs.org/dist/latest-v8.x/docs/api/)] | Used for running command-line JavaScript tools
-| [npm](https://npmjs.com/) (v5+) | [[docs](https://nodejs.org/dist/latest-v8.x/docs/api/)] | Used to install third-party dependencies and tools
-| [`canvas-sketch`](https://github.com/mattdesl/canvas-sketch/) | [[docs](https://github.com/mattdesl/canvas-sketch/tree/master/docs)] | A development tool & framework for Generative Art
-| [`canvas-sketch-util`](https://github.com/mattdesl/canvas-sketch-util/) | [[docs](https://github.com/mattdesl/canvas-sketch-util/tree/master/docs)] | Utilities for Math & Random Number Generation
-| [ThreeJS](https://threejs.org/) | [[docs](https://threejs.org/docs/)] | A 3D rendering engine for WebGL
+| --- | --- | --- |
+| *Code Editor* | | A JavaScript code editor, [VSCode](https://code.visualstudio.com/) is recommended |
+| *Browser* | | A modern browser, [Chrome](https://www.google.com/chrome/) is recommended |
+| *Canvas API* | [[docs](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)] | The HTML5 `<canvas>` API, built into all browsers |
+| *Command-Line* | [[guide](./docs/command-line.md)] | A command-line application like Terminal (macOS) or [cmder](http://cmder.net/) (Windows) |
+| [Node.js](https://nodejs.org/en/) (v22+) | [[docs](https://nodejs.org/dist/latest-v8.x/docs/api/)] | Used for running command-line JavaScript tools |
+| [npm](https://npmjs.com/) (v11+) | [[docs](https://nodejs.org/dist/latest-v8.x/docs/api/)] | Used to install third-party dependencies and tools |
+| [`canvas-sketch`](https://github.com/mattdesl/canvas-sketch/) | [[docs](https://github.com/mattdesl/canvas-sketch/tree/master/docs)] | A development tool & framework for Generative Art |
+| [`canvas-sketch-util`](https://github.com/mattdesl/canvas-sketch-util/) | [[docs](https://github.com/mattdesl/canvas-sketch-util/tree/master/docs)] | Utilities for Math & Random Number Generation |
+| [ThreeJS](https://threejs.org/) | [[docs](https://threejs.org/docs/)] | A 3D rendering engine for WebGL |
 
-# Installing the Prerequisites 
+## Installing the Prerequisites
 
 Before starting the workshop, make sure you have installed and set up:
 
 - A browser, Chrome recommended
 - A code editor, VSCode recommended
 - A terminal application (like Terminal, cmder or cmd.exe)
-- Node.js 8+ and npm 5+
+- Node.js 22+ and npm 11+
 
 If you already have these tools installed, you can use the `--version` flag to make sure you have at least `node@8` and `npm@5`:
 
@@ -56,13 +56,13 @@ npm --version
 node --version
 ```
 
-### Complete Installation Guide
+## Complete Installation Guide
 
 If you haven't installed these yet, you can find more instructions here:
 
 - [Installation Guide](./docs/installation.md)
 
-# Installing `canvas-sketch` CLI
+## Installing `canvas-sketch` CLI
 
 We will be using [`canvas-sketch`](https://github.com/mattdesl/canvas-sketch/) and its command-line interface (CLI) during the workshop.
 
@@ -74,31 +74,31 @@ npm install canvas-sketch-cli --global
 
 > :bulb: Note the `-cli` suffix in the name; this tells npm to install the CLI tool, not the code library.
 
-# Command-Line Tips & Suggestions
+## Command-Line Tips & Suggestions
 
 If you are new to the command-line, you can read more details here:
 
 - [Command-Line Tips & Suggestions](./docs/command-line.md)
 
-# Cloning & Running Examples
+## Cloning & Running Examples
 
 During the workshop, you won't need to clone and run this repository locally. However, if you wish to do so, you can find more instructions here:
 
 - [Cloning & Running Examples](./docs/cloning.md)
 
-# Cheat Sheet
+## Cheat Sheet
 
 I've also included a small "cheat sheet" that you can use as a reference if you are forgetting some of the patterns and recipes discussed during the workshop.
 
 - [Cheat Sheet](./docs/cheat-sheet.md)
 
-# Exercises
+### Exercises
 
 Below are a couple exercises you can tackle during lunch and free coding periods:
 
 - [Exercises](./docs/exercises.md)
 
-# Other Modules for Creative Coding
+### Other Modules for Creative Coding
 
 This workshop encourages students to make use of [npm](https://www.npmjs.com) modules to build complex and interesting artworks.
 
@@ -126,7 +126,7 @@ Below are some nice modules for creative coding & generative art:
 - [glsl-noise](https://www.npmjs.com/package/glsl-noise) - noise functions as a GLSL module (used with glslify)
 - [glsl-hsl2rgb](https://www.npmjs.com/package/glsl-hsl2rgb) - HSL to RGB function as a GLSL module (used with glslify)
 
-# Further Reading
+## Further Reading
 
 More links to generative art & creative coding:
 
@@ -176,7 +176,7 @@ More links to generative art & creative coding:
 
   - [#plottertwitter](https://twitter.com/hashtag/plottertwitter?lang=en), [#generative](https://twitter.com/hashtag/generative?lang=en), [#webgl](https://twitter.com/hashtag/webgl?lang=en) and similar hashtags on Twitter, Instagram etc.
 
-# License
+## License
 
 This repository has a dual license.
 

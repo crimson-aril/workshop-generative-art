@@ -1,78 +1,82 @@
-const canvasSketch = require('canvas-sketch');
+import canvasSketch from "canvas-sketch";
+import * as THREE from "three";
 
-// Ensure ThreeJS is in global scope for the 'examples/'
-global.THREE = require('three');
 const defaultSubdiv = 16;
 const materials = [
   {
     material: new THREE.MeshBasicMaterial({
-      color: 'white',
-      wireframe: true
-    })
+      color: "white",
+      wireframe: true,
+    }),
   },
   {
     material: new THREE.MeshBasicMaterial({
-      color: 'white'
-    })
+      color: "white",
+    }),
   },
   {
     material: new THREE.MeshNormalMaterial({
-      flatShading: true
-    })
+      flatShading: true,
+    }),
   },
   {
     material: new THREE.MeshStandardMaterial({
-      color: 'white',
+      color: "white",
       roughness: 1,
       metalness: 0.0,
-      flatShading: true
-    })
+      flatShading: true,
+    }),
   },
   {
     material: new THREE.MeshStandardMaterial({
-      color: 'white',
+      color: "white",
       roughness: 1,
       metalness: 0.0,
-      flatShading: false
-    })
+      flatShading: false,
+    }),
   },
   {
     material: new THREE.MeshNormalMaterial({
-      flatShading: true
+      flatShading: true,
     }),
-    geometry: new THREE.TorusGeometry(0.75, 0.25, defaultSubdiv, defaultSubdiv * 2)
+    geometry: new THREE.TorusGeometry(
+      0.75,
+      0.25,
+      defaultSubdiv,
+      defaultSubdiv * 2,
+    ),
   },
   {
     material: new THREE.MeshNormalMaterial({
-      flatShading: true
+      flatShading: true,
     }),
-    geometry: new THREE.BoxGeometry(1, 1, 1)
-  }
+    geometry: new THREE.BoxGeometry(1, 1, 1),
+  },
 ];
 
 const settings = {
-  dimensions: [1440, 900],
+  dimensions: [2048, 2048],
   exportPixelRatio: 2,
   scaleToView: true,
   // Make the loop animated
   animate: true,
   totalFrames: materials.length + 1,
   fps: 1,
-  playbackRate: 'throttle',
+  playbackRate: "throttle",
   // Get a WebGL canvas rather than 2D
-  context: 'webgl',
+  context: "webgl2",
   // Turn on MSAA
-  attributes: { antialias: true }
+  attributes: { antialias: true },
 };
 
-const sketch = ({ context, update }) => {
+const sketch = ({ context }) => {
   // Create a renderer
   const renderer = new THREE.WebGLRenderer({
-    context
+    context,
   });
 
   // WebGL background color
-  renderer.setClearColor('black', 1);
+  renderer.setClearColor("black", 1);
 
   // Setup a camera
   const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 100);
@@ -86,35 +90,53 @@ const sketch = ({ context, update }) => {
   scene.add(mesh);
 
   // Specify an ambient/unlit colour
-  scene.add(new THREE.AmbientLight('#000'));
+  scene.add(new THREE.AmbientLight("#000000"));
 
-  // Add some light
-  const light = new THREE.PointLight('#fff', 1, 15.5);
+  // Add some light (using standard modern intensity scalars)
+  const light = new THREE.PointLight("#fff", 30, 15.5);
   light.position.set(2, 2, -4).multiplyScalar(1.5);
   scene.add(light);
 
   // draw each frame
   return {
     // Handle resize events here
-    resize ({ pixelRatio, viewportWidth, viewportHeight }) {
+    resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
       camera.aspect = viewportWidth / viewportHeight;
       camera.updateProjectionMatrix();
     },
     // And render events here
-    render ({ time, frame }) {
-      const { material, subdiv = defaultSubdiv, geometry } = materials[frame % materials.length];
-      mesh.geometry.dispose();
-      mesh.geometry = geometry || new THREE.SphereGeometry(1, subdiv * 2, subdiv);
+    render({ frame }) {
+      const {
+        material,
+        subdiv = defaultSubdiv,
+        geometry,
+      } = materials[frame % materials.length];
+
+      // Prevent memory leaks by properly checking if a prior geometry configuration exists
+      if (mesh.geometry) {
+        mesh.geometry.dispose();
+      }
+
+      mesh.geometry =
+        geometry || new THREE.SphereGeometry(1, subdiv * 2, subdiv);
       mesh.material = material;
       renderer.render(scene, camera);
     },
     // Dispose of WebGL context (optional)
-    unload () {
+    unload() {
+      if (mesh.geometry) mesh.geometry.dispose();
       renderer.dispose();
-    }
+    },
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

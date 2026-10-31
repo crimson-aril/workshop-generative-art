@@ -1,25 +1,24 @@
-global.THREE = require('three');
-
-const canvasSketch = require('canvas-sketch');
-const random = require('canvas-sketch-util/random');
+import canvasSketch from "canvas-sketch";
+import random from "canvas-sketch-util/random";
+import * as THREE from "three";
 
 const settings = {
+  dimensions: [2048, 2048],
   animate: true,
-  dimensions: [ 1024, 1280 ],
   // Get a WebGL canvas rather than 2D
-  context: 'webgl',
+  context: "webgl2",
   // Turn on MSAA
-  attributes: { antialias: true }
+  attributes: { antialias: true },
 };
 
 const sketch = ({ context, width, height }) => {
-  // Create a renderer
+  // Create a renderer passing the context provided by canvas-sketch
   const renderer = new THREE.WebGLRenderer({
-    context
+    context,
   });
 
   // WebGL background color
-  renderer.setClearColor('hsl(0, 0%, 95%)', 1);
+  renderer.setClearColor("hsl(0, 0%, 95%)", 1);
 
   // Setup a camera, we will update its settings on resize
   const camera = new THREE.OrthographicCamera();
@@ -45,7 +44,7 @@ const sketch = ({ context, width, height }) => {
   // draw each frame
   return {
     // Handle resize events here
-    resize ({ pixelRatio, viewportWidth, viewportHeight }) {
+    resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
 
@@ -65,17 +64,24 @@ const sketch = ({ context, width, height }) => {
       camera.updateProjectionMatrix();
     },
     // And render events here
-    render ({ time }) {
+    render({ time }) {
       // Rotate mesh
       mesh.rotation.y = time * 0.25;
       // Draw scene with our camera
       renderer.render(scene, camera);
     },
     // Dispose of WebGL context (optional)
-    unload () {
+    unload() {
       renderer.dispose();
-    }
+    },
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

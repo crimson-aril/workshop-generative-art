@@ -1,38 +1,38 @@
-const canvasSketch = require('canvas-sketch');
-const random = require('canvas-sketch-util/random');
-const palettes = require('nice-color-palettes/1000.json').slice(250);
+import canvasSketch from "canvas-sketch";
+import random from "canvas-sketch-util/random";
+import palettesList from "nice-color-palettes/1000.json";
+import * as THREE from "three";
 
-// Ensure ThreeJS is in global scope for the 'examples/'
-global.THREE = require('three');
+const palettes = palettesList.slice(250);
 
 const isometric = true;
 const simplePalette = true;
-const palette = simplePalette ? [ '#efb3b3', '#a0d0e8' ] : random.shuffle(random.pick(palettes)).slice(0, 2);
+const palette = simplePalette
+  ? ["#efb3b3", "#a0d0e8"]
+  : random.shuffle(random.pick(palettes)).slice(0, 2);
 
 const settings = {
-  dimensions: [1440, 900],
+  dimensions: "A4",
+  orientation: "landscape",
   exportPixelRatio: 2,
   scaleToView: true,
   animate: true,
-  // Get a WebGL canvas rather than 2D
-  context: 'webgl',
-  // animate: true,
+  context: "webgl2",
   fps: 24,
   duration: 8,
-  // Turn on MSAA
-  attributes: { antialias: true }
+  attributes: { antialias: true },
 };
 
-const sketch = ({ context, update }) => {
+const sketch = ({ context }) => {
   random.setSeed(6);
 
-  // Create a renderer
+  // Create a renderer passing the WebGL context provided by canvas-sketch
   const renderer = new THREE.WebGLRenderer({
-    context
+    context,
   });
 
   // WebGL background color
-  renderer.setClearColor('#000', 1);
+  renderer.setClearColor("#000", 1);
 
   // Setup a camera
   const camera = isometric
@@ -55,40 +55,34 @@ const sketch = ({ context, update }) => {
       const material = new THREE.MeshStandardMaterial({
         roughness: 0.75,
         metalness: 0.25,
-        color: new THREE.Color(random.pick(palette))
+        color: new THREE.Color(random.pick(palette)),
       });
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.scale.set(
-        random.gaussian(),
-        random.gaussian() * random.gaussian() * 2,
-        random.gaussian()
-      ).multiplyScalar(0.25 * random.gaussian());
-      mesh.position.set(
-        u,
-        0,
-        v
-      );
+
+      const scaleX = random.gaussian();
+      const scaleY = random.gaussian() * random.gaussian() * 2;
+      const scaleZ = random.gaussian();
+      mesh.scale
+        .set(scaleX, scaleY, scaleZ)
+        .multiplyScalar(0.25 * random.gaussian());
+
+      mesh.position.set(u, 0, v);
       scene.add(mesh);
     }
   }
 
-  // Specify an ambient/unlit colour
-  // scene.add(new THREE.AmbientLight('#181818'));
-
   // Add some light
-  const light = new THREE.DirectionalLight('white', 4);
+  const light = new THREE.DirectionalLight("white", 4);
   light.position.set(-1, 4, 1);
   light.lookAt(new THREE.Vector3());
   scene.add(light);
 
   // draw each frame
   return {
-    // Handle resize events here
-    resize ({ pixelRatio, viewportWidth, viewportHeight }) {
+    resize({ pixelRatio, viewportWidth, viewportHeight }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
       if (isometric) {
-        // Setup an isometric perspective
         const aspect = viewportWidth / viewportHeight;
         const zoom = 2.25;
         const offset = settings.animate ? 0.25 : 0.25;
@@ -105,8 +99,7 @@ const sketch = ({ context, update }) => {
       }
       camera.updateProjectionMatrix();
     },
-    // And render events here
-    render ({ playhead, frame, width, height }) {
+    render({ playhead, width, height }) {
       if (!isometric) {
         const orbit = Math.PI / 4 + playhead * Math.PI * 2;
         const radius = 4;
@@ -123,11 +116,17 @@ const sketch = ({ context, update }) => {
       camera.setViewOffset(width, height, 0, 25, width, height);
       renderer.render(scene, camera);
     },
-    // Dispose of WebGL context (optional)
-    unload () {
+    unload() {
       renderer.dispose();
-    }
+    },
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

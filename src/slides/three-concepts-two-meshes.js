@@ -1,29 +1,28 @@
-const canvasSketch = require('canvas-sketch');
-const random = require('canvas-sketch-util/random');
-
-// Ensure ThreeJS is in global scope for the 'examples/'
-global.THREE = require('three');
+import canvasSketch from "canvas-sketch";
+import random from "canvas-sketch-util/random";
+import * as THREE from "three";
 
 const settings = {
-  dimensions: [1440, 900],
+  dimensions: "A4",
+  orientation: "landscape",
   exportPixelRatio: 2,
   scaleToView: true,
   // Get a WebGL canvas rather than 2D
-  context: 'webgl',
+  context: "webgl2",
   // Turn on MSAA
-  attributes: { antialias: true }
+  attributes: { antialias: true },
 };
 
-const sketch = ({ context, update }) => {
+const sketch = ({ context }) => {
   random.setSeed(16);
 
-  // Create a renderer
+  // Create a renderer passing the context provided by canvas-sketch
   const renderer = new THREE.WebGLRenderer({
-    context
+    context,
   });
 
   // WebGL background color
-  renderer.setClearColor('#000', 1);
+  renderer.setClearColor("#000000", 1);
 
   // Setup a camera
   const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 100);
@@ -36,7 +35,7 @@ const sketch = ({ context, update }) => {
   const material1 = new THREE.MeshStandardMaterial({
     roughness: 1,
     metalness: 0,
-    color: new THREE.Color('hsl(0, 55%, 60%)')
+    color: new THREE.Color("hsl(0, 55%, 60%)"),
   });
   const mesh1 = new THREE.Mesh(geometry, material1);
   mesh1.position.set(1, 0, 0);
@@ -45,7 +44,7 @@ const sketch = ({ context, update }) => {
   const material2 = new THREE.MeshStandardMaterial({
     roughness: 1,
     metalness: 0,
-    color: new THREE.Color('hsl(200, 55%, 60%)')
+    color: new THREE.Color("hsl(200, 55%, 60%)"),
   });
   const mesh2 = new THREE.Mesh(geometry, material2);
   mesh2.position.set(-1, 0, 0);
@@ -54,10 +53,10 @@ const sketch = ({ context, update }) => {
   scene.add(mesh2);
 
   // Specify an ambient/unlit colour
-  scene.add(new THREE.AmbientLight('hsl(0, 0%, 10%)'));
+  scene.add(new THREE.AmbientLight("hsl(0, 0%, 10%)"));
 
   // Add some light
-  const light = new THREE.DirectionalLight('white', 1.25);
+  const light = new THREE.DirectionalLight("white", 1.25);
   light.position.set(3, 5, 4);
   light.lookAt(new THREE.Vector3());
   scene.add(light);
@@ -65,19 +64,15 @@ const sketch = ({ context, update }) => {
   // draw each frame
   return {
     // Handle resize events here
-    resize ({ pixelRatio, viewportWidth, viewportHeight, width, height }) {
+    resize({ pixelRatio, viewportWidth, viewportHeight, width, height }) {
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(viewportWidth, viewportHeight);
       camera.aspect = viewportWidth / viewportHeight;
-      camera.setViewOffset(
-        width, height,
-        0, 40,
-        width, height
-      );
+      camera.setViewOffset(width, height, 0, 40, width, height);
       camera.updateProjectionMatrix();
     },
     // And render events here
-    render ({ playhead, frame }) {
+    render({ playhead }) {
       const orbit = Math.PI / 4 + playhead * Math.PI * 2;
       const y = 4;
       const radius = 4;
@@ -90,10 +85,17 @@ const sketch = ({ context, update }) => {
       renderer.render(scene, camera);
     },
     // Dispose of WebGL context (optional)
-    unload () {
+    unload() {
       renderer.dispose();
-    }
+    },
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    ...settings,
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

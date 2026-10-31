@@ -1,11 +1,8 @@
-const canvasSketch = require('canvas-sketch');
-const { lerp } = require('canvas-sketch-util/math');
-const random = require('canvas-sketch-util/random');
-const palettes = require('nice-color-palettes/1000.json');
+import canvasSketch from "canvas-sketch";
+import { lerp } from "canvas-sketch-util/math";
+import random from "canvas-sketch-util/random";
+import palettes from "nice-color-palettes/1000.json";
 
-const settings = {
-  dimensions: [ 2048, 2048 ]
-};
 
 const sketch = ({ width, height }) => {
   const count = 40;
@@ -13,8 +10,8 @@ const sketch = ({ width, height }) => {
   const maxColors = random.rangeFloor(2, 6);
   const fontFamily = '"Andale Mono"';
   const palette = random.shuffle(random.pick(palettes)).slice(0, maxColors);
-  const background = 'hsl(0, 0%, 94%)';
-  const characters = '=.'.split('');
+  const background = "hsl(0, 0%, 94%)";
+  const characters = "=.".split("");
 
   const createGrid = () => {
     const points = [];
@@ -25,7 +22,7 @@ const sketch = ({ width, height }) => {
         let u = x / (count - 1);
         let v = y / (count - 1);
 
-        const [ dx, dy ] = random.insideSphere(0.05);
+        const [dx, dy] = random.insideSphere(0.05);
         u += dx;
         v += dy;
 
@@ -39,7 +36,7 @@ const sketch = ({ width, height }) => {
           size: Math.abs(baseSize * size + random.gaussian() * sizeOffset),
           rotation: n * Math.PI * 0.5,
           character: random.pick(characters),
-          position: [ u, v ]
+          position: [u, v],
         });
       }
     }
@@ -53,12 +50,12 @@ const sketch = ({ width, height }) => {
     context.fillRect(0, 0, width, height);
 
     grid.forEach(({ position, rotation, size, color, character }) => {
-      const [ u, v ] = position;
+      const [u, v] = position;
       const x = lerp(margin, width - margin, u);
       const y = lerp(margin, height - margin, v);
       context.fillStyle = context.strokeStyle = color;
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
+      context.textAlign = "center";
+      context.textBaseline = "middle";
       context.font = `${size}px ${fontFamily}`;
 
       context.save();
@@ -71,4 +68,10 @@ const sketch = ({ width, height }) => {
   };
 };
 
-canvasSketch(sketch, settings);
+export function start() {
+  return canvasSketch(sketch, {
+    parent: document.getElementById('sketch-workspace') || document.body,
+    scaleToFit: true,
+    scaleToFitPadding: 36,
+  });
+}

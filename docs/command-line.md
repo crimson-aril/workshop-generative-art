@@ -1,8 +1,8 @@
-#### <sup>:closed_book: [workshop-generative-art](../README.md) → Command-Line Tips & Suggestions</sup>
-
+---
+title: "Command-Line Tips & Suggestions"
 ---
 
-# Command-Line Tips & Suggestions
+## Command-Line Tips & Suggestions
 
 In this workshop we will only use a few operations from the command-line:
 
@@ -76,6 +76,4 @@ In macOS Terminal, you can enter `open .` to open the current working directory 
 - *Stop Program* — You can push `Ctrl + C` to kill a program, like the canvas-sketch development environment.
 - *New Terminal Tab* — In macOS Terminal, you can push `Cmd + T` to open a new tab from the same folder
 
-## 
-
-#### <sup>[← Back to Documentation](../README.md)
+### [← Back to Documentation](../README.md)
