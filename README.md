@@ -1,6 +1,6 @@
 # Creative Coding & Generative Art with JavaScript
 
-This repository includes code & resources for students attending my *Generative Art & Creative Coding with JavaScript* workshops in 2018.
+This repository includes code & resources for students attending Matt DesLauriers's [Generative Art & Creative Coding with JavaScript](https://master.dev/courses/canvas-webgl/) workshops in 2018.
 
 ## Contents
 
